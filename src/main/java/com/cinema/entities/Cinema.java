@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -26,11 +27,13 @@ public class Cinema implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idCinema;
 	private String nomCinema;
-	private double longitude,latitude,altitude;
+	private double longitude;
+	private double latitude;
+	private double altitude;
 	private int nbrSalles;
 	@OneToMany(mappedBy = "cinema") 
-	private Collection<Salle> salles;
-	@ManyToOne 
+	private Collection<Salle> salle;
+	@ManyToOne @JoinColumn(name = "idVille")
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private Ville ville;
 	
