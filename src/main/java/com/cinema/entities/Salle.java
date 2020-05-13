@@ -15,17 +15,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
+@Data
 @AllArgsConstructor @NoArgsConstructor @ToString
 public class Salle implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idSalle;
 	private String nomSalle;
-	private int nbrSalles;
+	private int nbrPlaces;
 	@ManyToOne
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@JoinColumn(name = "idCinema")

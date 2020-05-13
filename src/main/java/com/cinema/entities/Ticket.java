@@ -3,6 +3,7 @@ package com.cinema.entities;
 import java.io.Serializable;
 import java.util.Collection;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,10 +15,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -27,6 +30,7 @@ public class Ticket implements Serializable {
 	private Long idTickets;
 	private String nomClient;
 	private double prix;
+	@Column(unique = true)
 	private int codePaiement;
 	private boolean reserve;
 	@ManyToOne
