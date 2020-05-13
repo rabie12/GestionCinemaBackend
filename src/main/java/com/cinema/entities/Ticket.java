@@ -30,8 +30,8 @@ public class Ticket implements Serializable {
 	private Long idTickets;
 	private String nomClient;
 	private double prix;
-	@Column(unique = true)
-	private int codePaiement;
+	@Column(unique = true,nullable = true)
+	private Integer codePaiement;
 	private boolean reserve;
 	@ManyToOne
 	@JoinColumn(name = "idPlace")

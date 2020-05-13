@@ -3,16 +3,23 @@ package com.cinema.service;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Stream;
 
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cinema.entities.Categorie;
 import com.cinema.entities.Cinema;
+import com.cinema.entities.Film;
 import com.cinema.entities.Place;
+import com.cinema.entities.ProjectionFilm;
 import com.cinema.entities.Salle;
 import com.cinema.entities.Seance;
+import com.cinema.entities.Ticket;
 import com.cinema.entities.Ville;
 import com.cinema.repository.CategorieRepository;
 import com.cinema.repository.CinemaRepository;
@@ -25,6 +32,7 @@ import com.cinema.repository.TicketRepository;
 import com.cinema.repository.VilleRepository;
 
 @Service
+@Transactional
 public class CinemaInitServiceImplement implements ICinemaInitService {
 	@Autowired
 	private VilleRepository villeRepo;
@@ -115,25 +123,68 @@ public class CinemaInitServiceImplement implements ICinemaInitService {
 
 	@Override
 	public void initCategories() {
-		// TODO Auto-generated method stub
+		Stream.of("Histoire","Drama","Action","Fiction").forEach(cat->{
+			Categorie categorie=new Categorie();
+			categorie.setNomCategorie(cat);
+			categorieRepo.save(categorie);
+		});
+		
 
 	}
 
 	@Override
 	public void initFilms() {
-		// TODO Auto-generated method stub
+		double[] duree= {1,1.5,2,2.5,3};
+		List<Categorie> categories= categorieRepo.findAll();
+				Stream.of("You see me","Jocker","Vikings","Dark Night").forEach(titre->{
+			Film film=new Film();
+			film.setTitre(titre);
+			film.setCategorie(categories.get(new Random().nextInt(categories.size())));
+			film.setDuree(duree[new Random().nextInt(duree.length)]);
+			film.setPhoto(titre.replace(" ", ""));
+			filmRepo.save(film);
+		});
 
 	}
 
 	@Override
 	public void initProjections() {
-		// TODO Auto-generated method stub
+		double [] prices= {10,20,40,50,60,90};
+		villeRepo.findAll().forEach(ville-> {
+			ville.getCinema().forEach(cinema->{ 
+			cinema.getSalle().forEach(salle->{
+				filmRepo.findAll().forEach(film->{
+					seanceRepo.findAll().forEach(seance->
+					{
+						ProjectionFilm projection=new ProjectionFilm();
+						projection.setFilm(film);
+						projection.setSalle(salle);
+						projection.setSeance(seance);
+						projection.setPrix(prices[new Random().nextInt(prices.length)]);
+						projectionFilmRepo.save(projection);
+					});
+					});
+				
+			});
+			
+		});
 
+	});
 	}
-
 	@Override
 	public void initTickets() {
-		// TODO Auto-generated method stub
+		projectionFilmRepo.findAll().forEach(p->{
+			p.getSalle().getPlaces().forEach(place->{
+				Ticket ticket=new Ticket();
+				ticket.setPlace(place);
+				ticket.setProjection(p);
+				ticket.setPrix(p.getPrix());
+				ticket.setReserve(false);
+				ticketRepo.save(ticket);
+				
+			});
+			
+		});
 
 	}
 
