@@ -18,18 +18,18 @@ public class GestionCinemaApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		cineInitService.initVilles();
-		cineInitService.initCinemas();
-		cineInitService.initSalles();
-		
-		cineInitService.initPlaces();
-		
-		cineInitService.initCategories();
-		
-		cineInitService.initFilms();
-		cineInitService.initSeances();
-		cineInitService.initProjections();
-		cineInitService.initTickets();
+//		cineInitService.initVilles();
+//		cineInitService.initCinemas();
+//		cineInitService.initSalles();
+//		
+//		cineInitService.initPlaces();
+//		
+//		cineInitService.initCategories();
+//		
+//		cineInitService.initFilms();
+//		cineInitService.initSeances();
+//		cineInitService.initProjections();
+//		cineInitService.initTickets();
 		
 		
 		
