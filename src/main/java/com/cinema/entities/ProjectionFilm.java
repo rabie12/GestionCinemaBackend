@@ -40,7 +40,7 @@ public class ProjectionFilm {
 	@JoinColumn(name = "idFilm")
 	private Film film;
 	@OneToMany(mappedBy = "projection")
-	private Collection<Ticket> tikets;
+	private Collection<Ticket> tickets;
 	@ManyToOne
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@JoinColumn(name = "idSeance")
