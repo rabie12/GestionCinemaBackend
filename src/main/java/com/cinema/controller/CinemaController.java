@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,7 @@ import com.cinema.repository.TicketRepository;
 
 import lombok.Data;
 
+
 @RestController
 public class CinemaController {
 	@Autowired
@@ -36,13 +38,15 @@ public class CinemaController {
 	
 	@GetMapping(path="/images/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
 	public byte[] images(@PathVariable(name="id") Long id) throws IOException {
-      Film film=filmRepo.findById(id).get();
+      Film film= filmRepo.findById(id).get();
       String photoName= film.getPhoto();
       File file=new File(System.getProperty("user.home")+"/cinema/images/"+photoName);
       Path path=Paths.get(file.toURI());
       return Files.readAllBytes(path);
       
 	}
+	
+	@CrossOrigin("http://localhost:4200")
 	@PostMapping("/payerTickets")
 	@Transactional
 	public List<Ticket> payerTicket(@RequestBody TicketForm ticketForm){
@@ -51,6 +55,7 @@ public class CinemaController {
 			Ticket ticket=ticketRepo.findById(id).get();
 			ticket.setNomClient(ticketForm.getNomClient());
 			ticket.setReserve(true);
+			ticket.setCodePaiement(ticket.getCodePaiement());
 			ticketRepo.save(ticket);
 			tickets.add(ticket);
 		});
