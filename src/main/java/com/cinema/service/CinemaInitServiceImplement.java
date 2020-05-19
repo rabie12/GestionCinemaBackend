@@ -141,7 +141,7 @@ public class CinemaInitServiceImplement implements ICinemaInitService {
 			film.setTitre(titre);
 			film.setCategorie(categories.get(new Random().nextInt(categories.size())));
 			film.setDuree(duree[new Random().nextInt(duree.length)]);
-			film.setPhoto(titre.replace(" ", "")+".jpg");
+			film.setPhoto(titre.replace(" ", "")+".jpeg");
 			filmRepo.save(film);
 		});
 
@@ -150,10 +150,12 @@ public class CinemaInitServiceImplement implements ICinemaInitService {
 	@Override
 	public void initProjections() {
 		double [] prices= {10,20,40,50,60,90};
+		List<Film> films= filmRepo.findAll();
 		villeRepo.findAll().forEach(ville-> {
 			ville.getCinema().forEach(cinema->{ 
 			cinema.getSalle().forEach(salle->{
-				filmRepo.findAll().forEach(film->{
+				int index=new Random().nextInt(films.size());
+				Film film= films.get(index);
 					seanceRepo.findAll().forEach(seance->
 					{
 						ProjectionFilm projection=new ProjectionFilm();
@@ -168,8 +170,6 @@ public class CinemaInitServiceImplement implements ICinemaInitService {
 			});
 			
 		});
-
-	});
 	}
 	@Override
 	public void initTickets() {

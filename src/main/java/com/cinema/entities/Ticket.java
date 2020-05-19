@@ -27,19 +27,19 @@ import lombok.ToString;
 public class Ticket implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idTickets;
+	private Long idTicket;
 	private String nomClient;
 	private double prix;
-	@Column(unique = true,nullable = true)
+	@Column(unique = false,nullable = true)
 	private Integer codePaiement;
 	private boolean reserve;
 	@ManyToOne
-	@JoinColumn(name = "idPlace")
 	@JsonProperty(access = Access.WRITE_ONLY)
+	@JoinColumn(name = "idPlace")
 	private Place place;
 	@ManyToOne
-	@JoinColumn(name = "idProjection")
 	@JsonProperty(access = Access.WRITE_ONLY)
+	@JoinColumn(name = "idProjection")
 	private ProjectionFilm projection;
 
 }
